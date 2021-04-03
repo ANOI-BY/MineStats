@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MineStats</string>
+    <string name="welcome_string">Connect your account</string>
+    <string name="LemonMilkLight">LemonMilkLight</string>
+    <string name="API_BINANCE_URL">https://api.binance.com</string>
+    <string name="API_INVISIBLES">https://invisibles.space</string>
+</resources>

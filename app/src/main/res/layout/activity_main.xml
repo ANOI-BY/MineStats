@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/dark_blue">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/qrcode_form"
+        android:visibility="gone">
+
+        <com.budiyev.android.codescanner.CodeScannerView
+            android:id="@+id/qrcode_scaner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:autoFocusButtonVisible="false"
+            app:flashButtonVisible="false"
+            app:frameColor="@color/yellow_light"
+            app:frameCornersRadius="10dp"
+            app:frameSize="0.50"
+            app:frameThickness="3dp" />
+
+        <Button
+            android:id="@+id/qrcode_close"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="650dp"
+            android:layout_marginStart="110dp"
+            android:foreground="@drawable/button_yellow_radius"
+            android:background="@color/transparent"
+            android:text="Back"
+            android:textColor="@color/white"
+
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/welcome_form"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/welcome_string"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/lemon_milk_light"
+            />
+
+        <Button
+            android:id="@+id/btn_scan"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="300dp"
+            android:layout_marginStart="80dp"
+            android:foreground="@drawable/button_yellow_radius"
+            android:background="@color/transparent"
+            android:text="Scan"
+            android:textColor="@color/white"
+            />
+
+        <Button
+            android:id="@+id/btn_manual"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="380dp"
+            android:layout_marginStart="80dp"
+            android:foreground="@drawable/button_yellow_radius"
+            android:background="@color/transparent"
+            android:text="Manual"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/manual_md_block"
+        layout="@layout/manual_modal_block"
+        />
+
+    <include
+        android:id="@+id/welcome_spin"
+        android:visibility="gone"
+        layout="@layout/spin_loading"
+        />
+
+</RelativeLayout>
