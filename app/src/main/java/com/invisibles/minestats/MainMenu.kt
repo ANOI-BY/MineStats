@@ -1,5 +1,6 @@
 package com.invisibles.minestats
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.invisibles.minestats.Graphics.GraphicHash
 import org.json.JSONArray
 import kotlin.collections.ArrayList
 import com.invisibles.minestats.Graphics.GraphLine
+import com.invisibles.minestats.Services.PayoutNotifyService
 
 const val curveTopMarginStatusOpen = 330f
 const val curveTopMarginStatusClose = 105f
@@ -67,6 +69,12 @@ class MainMenu : AppCompatActivity() {
         setComponentsListener()
         runUpdateInformation()
         checkUpdates()
+        startServices()
+
+    }
+
+    private fun startServices() {
+        startService(Intent(this, PayoutNotifyService::class.java))
     }
 
     private fun checkUpdates() {
@@ -357,6 +365,7 @@ class MainMenu : AppCompatActivity() {
 
     private fun setComponentsListener(){
         switchStatusForm.setOnClickListener{
+
             val height_curve = curveBlock.layoutParams.height
             val width_curve = curveBlock.layoutParams.width
 
