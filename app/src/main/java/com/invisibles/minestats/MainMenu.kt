@@ -1,5 +1,7 @@
 package com.invisibles.minestats
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
@@ -14,13 +16,12 @@ import com.invisibles.minestats.Graphics.GraphicHash
 import org.json.JSONArray
 import kotlin.collections.ArrayList
 import com.invisibles.minestats.Graphics.GraphLine
-import com.invisibles.minestats.Services.PayoutNotifyService
+import com.invisibles.minestats.Services.*
 
 const val curveTopMarginStatusOpen = 330f
 const val curveTopMarginStatusClose = 105f
 
 class MainMenu : AppCompatActivity() {
-
 
     //Init pers
     private lateinit var MAText: TextView
@@ -49,6 +50,7 @@ class MainMenu : AppCompatActivity() {
     private lateinit var updateVersion: TextView
     private lateinit var spin: ConstraintLayout
     private lateinit var spinEmptySpace: RelativeLayout
+    private lateinit var storage: Storage
 
     private var workersList: ArrayList<String> = arrayListOf()
     private var hashrateWorkers: JSONArray = JSONArray()
@@ -69,12 +71,15 @@ class MainMenu : AppCompatActivity() {
         setComponentsListener()
         runUpdateInformation()
         checkUpdates()
-        startServices()
+        //startServices()
+        //ServiceState.setServiceState(this, ServiceStateID.STOPPED, ServicesName.PAYOUT_NOTIFY_SERVICE)
 
     }
 
     private fun startServices() {
-        startService(Intent(this, PayoutNotifyService::class.java))
+        if (ServiceState.getServiceState(this, ServicesName.PAYOUT_NOTIFY_SERVICE) == ServiceStateID.STOPPED){
+            enqueueWork(this, Intent(this, PayoutIntentService::class.java))
+        }
     }
 
     private fun checkUpdates() {
@@ -333,7 +338,7 @@ class MainMenu : AppCompatActivity() {
     }
 
     private fun setupComponents() {
-        val storage = Storage(this)
+        storage = Storage(this)
 
         MAText = findViewById(R.id.mining_account_text)
         miningAccount = storage.getValue("miningAccount")
