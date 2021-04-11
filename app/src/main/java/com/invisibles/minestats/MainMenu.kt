@@ -1,16 +1,24 @@
 package com.invisibles.minestats
 
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.forEach
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.invisibles.minestats.Graphics.GraphItem
 import com.invisibles.minestats.Graphics.GraphicHash
 import org.json.JSONArray
@@ -51,11 +59,15 @@ class MainMenu : AppCompatActivity() {
     private lateinit var spin: ConstraintLayout
     private lateinit var spinEmptySpace: RelativeLayout
     private lateinit var storage: Storage
+    private lateinit var mainNavbar: BottomNavigationView
+    private lateinit var homeFragment: HomeStats
+    private lateinit var mainMenu: Menu
 
     private var workersList: ArrayList<String> = arrayListOf()
     private var hashrateWorkers: JSONArray = JSONArray()
     private var hashrateWorkersPut = 0
     private var ethPrice = 0.toDouble()
+
 
     private var statusIsOpen = true
     private var curveIsOpen = true
@@ -68,12 +80,60 @@ class MainMenu : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setupComponents()
-        setComponentsListener()
-        runUpdateInformation()
-        checkUpdates()
+        initMainNavbar()
+        //setComponentsListener()
+        //runUpdateInformation()
+        //checkUpdates()
         //startServices()
         //ServiceState.setServiceState(this, ServiceStateID.STOPPED, ServicesName.PAYOUT_NOTIFY_SERVICE)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        mainMenu = menu
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun initMainNavbar(){
+        mainNavbar.disableTooltip()
+
+        setDefaultView()
+
+        mainNavbar.setOnNavigationItemSelectedListener { item ->
+
+            when (item.itemId){
+                R.id.menu_home -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_frame, homeFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+
+
+                }
+            }
+
+            true
+        }
+    }
+
+    private fun BottomNavigationView.disableTooltip(){
+        val content = getChildAt(0)
+        if (content is ViewGroup){
+            content.forEach {
+                it.setOnLongClickListener {
+                    return@setOnLongClickListener true
+                }
+            }
+        }
+    }
+
+    private fun setDefaultView() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_frame, homeFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
     }
 
     private fun startServices() {
@@ -112,7 +172,7 @@ class MainMenu : AppCompatActivity() {
             }
         }
 
-        hashrateThread.start()
+        //hashrateThread.start()
     }
     
     private fun loadInformation() {
@@ -173,8 +233,8 @@ class MainMenu : AppCompatActivity() {
 
 
                 runOnUiThread {
-                    receivedForToday.text = "$ethQuantityT ETH ~ $usdPriceETH$"
-                    ethereumCost.text = ethereumPrice
+                    //receivedForToday.text = "$ethQuantityT ETH ~ $usdPriceETH$"
+                    //ethereumCost.text = ethereumPrice
                 }
             }
             else{
@@ -202,11 +262,11 @@ class MainMenu : AppCompatActivity() {
                 val usdPriceETH = (ethQuantityY.toFloat() * ethPrice).toString().substring(0, 4)
 
                 runOnUiThread {
-                    receivedForYesterday.text = "$ethQuantityY ETH ~ $usdPriceETH$"
+                    //receivedForYesterday.text = "$ethQuantityY ETH ~ $usdPriceETH$"
                 }
             }
             else {
-                receivedForYesterday.text = "$ethQuantity ETH"
+                //receivedForYesterday.text = "$ethQuantity ETH"
             }
 
         }
@@ -339,33 +399,34 @@ class MainMenu : AppCompatActivity() {
 
     private fun setupComponents() {
         storage = Storage(this)
+        homeFragment = HomeStats(this)
+        //MAText = findViewById(R.id.mining_account_text)
+        //miningAccount = storage.getValue("miningAccount")
+        //fifteenHashRate = findViewById(R.id.fift_text)
+        //twentyFourHashrate = findViewById(R.id.twenty_text)
+        //numOfWorkersView = findViewById(R.id.workers_text)
+        //binanceApi = BinanceAPI(this)
+        mainNavbar = findViewById(R.id.main_navbar)
+        //switchStatusForm = findViewById(R.id.switch_status_form)
+        //statusForm = findViewById(R.id.status_form)
+        //statusBlock = findViewById(R.id.status_block)
+        //receivedForToday = findViewById(R.id.received_for_today)
+        //scrollView = findViewById(R.id.scrollView)
+        //hashrateCurve = findViewById(R.id.hashrate_curve)
+        //curveBlock = findViewById(R.id.curve_block)
+        //switchCurveForm = findViewById(R.id.switch_hashrate_form)
+        //curveForm = findViewById(R.id.curve_form)
+        //ethereumCost = findViewById(R.id.ethereum_cost)
+        //receivedForYesterday = findViewById(R.id.received_for_yesterday)
+        //autoupdate = Autoupdate(this)
+        //updateAllBlocks = findViewById(R.id.update_all_block)
+        //updateEmptySpace = findViewById(R.id.update_block_empty_space)
+        //updateButton = findViewById(R.id.update_button)
+        //updateVersion = findViewById(R.id.update_new_version)
+        //spin = findViewById(R.id.main_spin)
+        //spinEmptySpace = findViewById(R.id.spin_background)
 
-        MAText = findViewById(R.id.mining_account_text)
-        miningAccount = storage.getValue("miningAccount")
-        fifteenHashRate = findViewById(R.id.fifteen_hashrate)
-        twentyFourHashrate = findViewById(R.id.twenty_four_hashrate)
-        numOfWorkersView = findViewById(R.id.num_of_workers)
-        binanceApi = BinanceAPI(this)
-        switchStatusForm = findViewById(R.id.switch_status_form)
-        statusForm = findViewById(R.id.status_form)
-        statusBlock = findViewById(R.id.status_block)
-        receivedForToday = findViewById(R.id.received_for_today)
-        scrollView = findViewById(R.id.scrollView)
-        hashrateCurve = findViewById(R.id.hashrate_curve)
-        curveBlock = findViewById(R.id.curve_block)
-        switchCurveForm = findViewById(R.id.switch_hashrate_form)
-        curveForm = findViewById(R.id.curve_form)
-        ethereumCost = findViewById(R.id.ethereum_cost)
-        receivedForYesterday = findViewById(R.id.received_for_yesterday)
-        autoupdate = Autoupdate(this)
-        updateAllBlocks = findViewById(R.id.update_all_block)
-        updateEmptySpace = findViewById(R.id.update_block_empty_space)
-        updateButton = findViewById(R.id.update_button)
-        updateVersion = findViewById(R.id.update_new_version)
-        spin = findViewById(R.id.main_spin)
-        spinEmptySpace = findViewById(R.id.spin_background)
-
-        autoupdate.runCheck()
+        //autoupdate.runCheck()
     }
 
     private fun setComponentsListener(){

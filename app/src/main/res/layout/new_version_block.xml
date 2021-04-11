@@ -24,7 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/block_radius"
+        android:background="@drawable/accent_block_radius"
         >
 
         <TextView
