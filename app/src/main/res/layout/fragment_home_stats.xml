@@ -6,37 +6,51 @@
     tools:context=".HomeStats"
     android:background="@color/main_background_white">
 
-    <TextView
-        android:id="@+id/mining_account_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Status"
-        android:textColor="@color/status_color"
-        android:textSize="18sp"
-        android:fontFamily="@font/red_hat_text"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="26dp"
+        android:orientation="horizontal"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        />
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="26dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_graphicon"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Statistics"
+            android:textColor="@color/status_color"
+            android:textSize="18sp"
+            android:fontFamily="@font/red_hat_text"
+            android:layout_marginStart="6dp"
+            android:paddingTop="4dp"
+            />
+
+    </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/info_blocks"
         android:layout_width="match_parent"
-        android:layout_height="121dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="69dp"
         >
 
         <RelativeLayout
             android:id="@+id/fift_block"
-            android:layout_width="111dp"
-            android:layout_height="121dp"
+            android:layout_width="185dp"
+            android:layout_height="87dp"
             android:layout_marginStart="15dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="@+id/twenty_block"
-            android:background="@drawable/accent_block_radius"
+            android:background="@drawable/other_block_radius"
             android:outlineSpotShadowColor="@color/accent_block"
             >
 
@@ -46,10 +60,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
+                android:layout_marginTop="22dp"
+                android:gravity="left"
+                android:layout_marginStart="15dp"
                 android:text="0.0"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/open_sans"
                 />
@@ -60,9 +75,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="63dp"
-                android:gravity="center"
-                android:text="15m\nHashrate"
+                android:layout_marginTop="57dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
+                android:text="15m Hashrate"
+                android:textSize="11sp"
                 android:textColor="@color/white"
                 android:alpha="0.7"
                 />
@@ -71,12 +88,12 @@
 
         <RelativeLayout
             android:id="@+id/twenty_block"
-            android:layout_width="111dp"
-            android:layout_height="121dp"
+            android:layout_width="185dp"
+            android:layout_height="87dp"
             android:layout_alignStart="@id/fift_block"
-            android:layout_alignEnd="@id/workers_block"
-            android:layout_marginStart="136dp"
-            android:layout_marginEnd="136dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="201dp"
             android:background="@drawable/other_block_radius">
 
             <TextView
@@ -85,10 +102,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
+                android:layout_marginTop="22dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
                 android:text="0.0"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/text_gray_black"
                 android:fontFamily="@font/open_sans"
                 />
@@ -99,9 +117,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="63dp"
-                android:gravity="center"
-                android:text="24h\nHashrate"
+                android:layout_marginTop="57dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
+                android:text="24h Hashrate"
+                android:textSize="11sp"
                 android:textColor="@color/text_gray_black"
                 android:alpha="0.7"
                 />
@@ -110,11 +130,12 @@
 
         <RelativeLayout
             android:id="@+id/workers_block"
-            android:layout_width="111dp"
-            android:layout_height="121dp"
-            android:layout_marginStart="277dp"
-            android:layout_alignParentEnd="true"
+            android:layout_width="185dp"
+            android:layout_height="87dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="97dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/other_block_radius">
 
             <TextView
@@ -123,25 +144,68 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
+                android:layout_marginTop="22dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
                 android:text="0.0"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/text_gray_black"
                 android:fontFamily="@font/open_sans"
                 />
 
             <TextView
-                android:id="@+id/workers_text_additional"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="63dp"
-                android:gravity="center"
-                android:text="Online\nWorkers"
+                android:layout_marginTop="57dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
+                android:text="Online workers"
+                android:textSize="11sp"
                 android:textColor="@color/text_gray_black"
                 android:alpha="0.7"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/eth_block"
+            android:layout_width="185dp"
+            android:layout_height="87dp"
+            android:layout_alignStart="@id/workers_block"
+            android:layout_marginTop="97dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="201dp"
+            android:background="@drawable/other_block_radius">
+
+            <TextView
+                android:id="@+id/eth_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="22dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
+                android:text="0.0"
+                android:textSize="16sp"
+                android:textColor="@color/text_gray_black"
+                android:fontFamily="@font/open_sans"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="57dp"
+                android:layout_marginStart="15dp"
+                android:gravity="left"
+                android:text="ETH course"
+                android:textColor="@color/text_gray_black"
+                android:alpha="0.7"
+                android:textSize="11sp"
                 />
 
         </RelativeLayout>

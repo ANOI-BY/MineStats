@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android" android:drawable="@drawable/ic_wallet">
+
+    <target
+        android:animation="@animator/color_change"
+        android:name="wallet_1"
+        />
+
+    <target
+        android:animation="@animator/color_change"
+        android:name="wallet_2"
+        />
+
+    <target
+        android:animation="@animator/color_change"
+        android:name="wallet_3"
+        />
+
+    <target
+        android:animation="@animator/color_change"
+        android:name="wallet_4"
+        />
+
+</animated-vector>

@@ -2,26 +2,31 @@
     android:width="30dp"
     android:height="30dp"
     android:viewportWidth="30"
-    android:viewportHeight="30">
+    android:viewportHeight="30"
+    android:name="wallet_icon">
   <path
+      android:name="wallet_1"
       android:pathData="M27.3609,19.8695H22.3009C19.9296,19.8695 17.9996,17.9407 17.9984,15.5707C17.9984,13.1982 19.9284,11.2682 22.3009,11.267H27.3609C27.8784,11.267 28.2984,11.687 28.2984,12.2045C28.2984,12.722 27.8784,13.142 27.3609,13.142H22.3009C20.9621,13.1432 19.8734,14.232 19.8734,15.5695C19.8734,16.9057 20.9634,17.9945 22.3009,17.9945H27.3609C27.8784,17.9945 28.2984,18.4145 28.2984,18.932C28.2984,19.4495 27.8784,19.8695 27.3609,19.8695Z"
-      android:fillColor="#130F26"
+      android:fillColor="@color/item_none_select"
       android:fillType="evenOdd"/>
   <path
+      android:name="wallet_2"
       android:pathData="M22.8729,16.4295H22.4829C21.9654,16.4295 21.5454,16.0095 21.5454,15.492C21.5454,14.9745 21.9654,14.5545 22.4829,14.5545H22.8729C23.3904,14.5545 23.8104,14.9745 23.8104,15.492C23.8104,16.0095 23.3904,16.4295 22.8729,16.4295Z"
-      android:fillColor="#130F26"
+      android:fillColor="@color/item_none_select"
       android:fillType="evenOdd"/>
   <group>
     <clip-path
         android:pathData="M2.5,3.75H28.2982V27.7161H2.5V3.75Z"
         android:fillType="evenOdd"/>
     <path
+        android:name="wallet_3"
         android:pathData="M9.997,5.625C6.897,5.625 4.3745,8.1475 4.3745,11.2475V20.2188C4.3745,23.3188 6.897,25.8413 9.997,25.8413H20.802C23.902,25.8413 26.4232,23.3188 26.4232,20.2188V11.2475C26.4232,8.1475 23.902,5.625 20.802,5.625H9.997ZM20.802,27.7163H9.997C5.8632,27.7163 2.4995,24.3525 2.4995,20.2188V11.2475C2.4995,7.1125 5.8632,3.75 9.997,3.75H20.802C24.9357,3.75 28.2982,7.1125 28.2982,11.2475V20.2188C28.2982,24.3525 24.9357,27.7163 20.802,27.7163Z"
-        android:fillColor="#130F26"
+        android:fillColor="@color/item_none_select"
         android:fillType="evenOdd"/>
   </group>
   <path
+      android:name="wallet_4"
       android:pathData="M15.8557,11.2976H9.107C8.5895,11.2976 8.1695,10.8776 8.1695,10.3601C8.1695,9.8426 8.5895,9.4226 9.107,9.4226H15.8557C16.3732,9.4226 16.7932,9.8426 16.7932,10.3601C16.7932,10.8776 16.3732,11.2976 15.8557,11.2976Z"
-      android:fillColor="#130F26"
+      android:fillColor="@color/item_none_select"
       android:fillType="evenOdd"/>
 </vector>

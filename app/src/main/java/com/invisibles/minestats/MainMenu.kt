@@ -1,8 +1,13 @@
 package com.invisibles.minestats
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +23,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.FragmentTransaction
+import androidx.vectordrawable.graphics.drawable.AnimatorInflaterCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.invisibles.minestats.Graphics.GraphItem
 import com.invisibles.minestats.Graphics.GraphicHash
@@ -25,6 +31,7 @@ import org.json.JSONArray
 import kotlin.collections.ArrayList
 import com.invisibles.minestats.Graphics.GraphLine
 import com.invisibles.minestats.Services.*
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 
 const val curveTopMarginStatusOpen = 330f
 const val curveTopMarginStatusClose = 105f
@@ -59,8 +66,12 @@ class MainMenu : AppCompatActivity() {
     private lateinit var spin: ConstraintLayout
     private lateinit var spinEmptySpace: RelativeLayout
     private lateinit var storage: Storage
-    private lateinit var mainNavbar: BottomNavigationView
+    private lateinit var mainNavbar: RelativeLayout
     private lateinit var homeFragment: HomeStats
+    private lateinit var homeIcon: ImageView
+    private lateinit var walletIcon: ImageView
+    private lateinit var profileIcon: ImageView
+    private lateinit var listIcons: ArrayList<ImageView>
     private lateinit var mainMenu: Menu
 
     private var workersList: ArrayList<String> = arrayListOf()
@@ -71,17 +82,19 @@ class MainMenu : AppCompatActivity() {
 
     private var statusIsOpen = true
     private var curveIsOpen = true
+    private var selectedTab = "HOME"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setupComponents()
         initMainNavbar()
-        //setComponentsListener()
+        setComponentsListener()
         //runUpdateInformation()
         //checkUpdates()
         //startServices()
@@ -89,32 +102,39 @@ class MainMenu : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        mainMenu = menu
-        return super.onCreateOptionsMenu(menu)
-    }
-
     private fun initMainNavbar(){
-        mainNavbar.disableTooltip()
 
         setDefaultView()
 
-        mainNavbar.setOnNavigationItemSelectedListener { item ->
+//        mainNavbar.disableTooltip()
+//
+//        setDefaultView()
+//
+//        mainNavbar.setOnNavigationItemSelectedListener { item ->
+//
+//            when (item.itemId){
+//                R.id.menu_home -> {
+//                    supportFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.main_frame, homeFragment)
+//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                        .commit()
+//                    item.isChecked = true
+//                    val animator = item.icon as Animatable
+//                    animator.start()
+//
+//                }
+//            }
+//
+//            true
+//        }
+    }
 
-            when (item.itemId){
-                R.id.menu_home -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_frame, homeFragment)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit()
-
-
-                }
-            }
-
-            true
-        }
+    private fun changeIconColor(idElement: Int, color: Int){
+        var icon = mainMenu.findItem(idElement).icon
+        icon = DrawableCompat.wrap(icon)
+        DrawableCompat.setTint(icon, ContextCompat.getColor(this, color))
+        mainMenu.findItem(idElement).icon = icon
     }
 
     private fun BottomNavigationView.disableTooltip(){
@@ -400,13 +420,19 @@ class MainMenu : AppCompatActivity() {
     private fun setupComponents() {
         storage = Storage(this)
         homeFragment = HomeStats(this)
+        homeIcon = findViewById(R.id.home_icon)
+        walletIcon = findViewById(R.id.wallet_icon)
+        profileIcon = findViewById(R.id.profile_icon)
+        listIcons = arrayListOf(homeIcon, walletIcon, profileIcon)
         //MAText = findViewById(R.id.mining_account_text)
         //miningAccount = storage.getValue("miningAccount")
         //fifteenHashRate = findViewById(R.id.fift_text)
         //twentyFourHashrate = findViewById(R.id.twenty_text)
         //numOfWorkersView = findViewById(R.id.workers_text)
         //binanceApi = BinanceAPI(this)
-        mainNavbar = findViewById(R.id.main_navbar)
+        mainNavbar = findViewById(R.id.nav_bar)
+        mainNavbar.bringToFront()
+        //mainMenu = mainNavbar.menu
         //switchStatusForm = findViewById(R.id.switch_status_form)
         //statusForm = findViewById(R.id.status_form)
         //statusBlock = findViewById(R.id.status_block)
@@ -429,127 +455,33 @@ class MainMenu : AppCompatActivity() {
         //autoupdate.runCheck()
     }
 
+    private fun resetAnim(){
+        listIcons.forEach {
+            val animation = it.drawable as AnimatedVectorDrawable
+            animation.reset()
+        }
+    }
+
     private fun setComponentsListener(){
-        switchStatusForm.setOnClickListener{
-
-            val height_curve = curveBlock.layoutParams.height
-            val width_curve = curveBlock.layoutParams.width
-
-
-            if (statusIsOpen){
-                statusIsOpen = false
-
-                Utils.getValueAnimation(0f, -25f){
-                    val value = it.animatedValue as Int
-                    switchStatusForm.rotation = value.toFloat()
-                    switchStatusForm.requestLayout()
-                }.start()
-
-                Utils.getValueAnimation(250f, 25f, function = {
-                    val value = it.animatedValue as Int
-                    statusBlock.layoutParams.height = value
-                    statusBlock.requestLayout()
-                }).start()
-
-                Utils.getValueAnimation(curveTopMarginStatusOpen, curveTopMarginStatusClose){
-                    val value = it.animatedValue.toString()
-                    val params = RelativeLayout.LayoutParams(width_curve, height_curve)
-                    params.marginStart = Utils.dps(30f)
-                    params.marginEnd = Utils.dps(30f)
-                    params.topMargin = value.toInt()
-                    curveBlock.layoutParams = params
-                    curveBlock.requestLayout()
-                }.start()
-
-
-            }
-            else{
-                statusIsOpen = true
-
-                Utils.getValueAnimation(-25f, 0f){
-                    val value = it.animatedValue as Int
-                    switchStatusForm.rotation = value.toFloat()
-                    switchStatusForm.requestLayout()
-                }.start()
-
-
-                Utils.getValueAnimation(25f, 250f, function = {
-                    val value = it.animatedValue as Int
-                    statusBlock.layoutParams.height = value
-                    statusBlock.requestLayout()
-                }).start()
-
-                Utils.getValueAnimation(curveTopMarginStatusClose, curveTopMarginStatusOpen, function = {
-                    val value = it.animatedValue.toString()
-                    val params = RelativeLayout.LayoutParams(width_curve, height_curve)
-                    params.marginStart = Utils.dps(30f)
-                    params.marginEnd = Utils.dps(30f)
-                    params.topMargin = value.toInt()
-                    curveBlock.layoutParams = params
-                    curveBlock.requestLayout()
-                }).start()
-
-            }
-
+        homeIcon.setOnClickListener {
+            val image = it as ImageView
+            val animation = image.drawable as AnimatedVectorDrawable
+            resetAnim()
+            animation.start()
         }
 
-        switchCurveForm.setOnClickListener {
-
-            if (curveIsOpen){
-                curveIsOpen = false
-                curveForm.visibility = View.GONE
-
-                Utils.getValueAnimation(0f, -25f){
-                    val value = it.animatedValue as Int
-                    switchCurveForm.rotation = value.toFloat()
-                    switchCurveForm.requestLayout()
-                }.start()
-
-
-                Utils.getValueAnimation(250f, 25f, function = {
-                    val value = it.animatedValue as Int
-                    curveBlock.layoutParams.height = value
-                    curveBlock.requestLayout()
-                }).start()
-
-            }
-            else{
-                curveIsOpen = true
-
-
-                Utils.getValueAnimation(-25f, 0f){
-                    val value = it.animatedValue as Int
-                    switchCurveForm.rotation = value.toFloat()
-                    switchCurveForm.requestLayout()
-                }.start()
-
-                Utils.getValueAnimation(25f, 250f, function = {
-                    val value = it.animatedValue as Int
-
-                    if (value == Utils.dps(250f)){
-                        curveForm.visibility = View.VISIBLE
-                    }
-
-                    curveBlock.layoutParams.height = value
-                    curveBlock.requestLayout()
-                }).start()
-
-            }
-
+        walletIcon.setOnClickListener {
+            val image = it as ImageView
+            val animation = image.drawable as AnimatedVectorDrawable
+            resetAnim()
+            animation.start()
         }
 
-        updateEmptySpace.setOnClickListener{
-
-        }
-
-        updateButton.setOnClickListener{
-            autoupdate.startUpdate()
-            updateAllBlocks.visibility = View.GONE
-            spin.visibility = View.VISIBLE
-        }
-
-        spinEmptySpace.setOnClickListener {
-
+        profileIcon.setOnClickListener {
+            val image = it as ImageView
+            val animation = image.drawable as AnimatedVectorDrawable
+            resetAnim()
+            animation.start()
         }
 
     }

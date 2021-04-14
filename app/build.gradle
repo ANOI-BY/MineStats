@@ -49,5 +49,7 @@ dependencies {
     implementation "io.karn:khttp-android:0.1.0"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    api 'com.github.ittianyu:BottomNavigationViewEx:2.0.2'
+
 
 }
